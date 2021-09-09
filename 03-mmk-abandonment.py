@@ -11,6 +11,12 @@ Note that queueing systems with Poisson arrivals exhibit the
 the mean queue length seen by new arrivals (excluding the new arrival)
 is the mean queue length over time.
 
+For a regular M/M/k queue, set the patience paramter to float('inf').
+See Section 9 of the Zukerman textbook
+(http://www.ee.cityu.edu.hk/~zukerman/classnotes.pdf)
+for more on the M/M/k queue, including formulas for the mean wait time
+and mean buffer length.
+
 Parameters:
 lambd - arrival rate (again we would use lambda but it is a reserved
         keyword in Python
