@@ -7,7 +7,7 @@ until served or until some exponentially distributed 'patience'
 time has elapsed.
 
 Note that queueing systems with Poisson arrivals exhibit the
-"PASTA" property (Poisson arrival see time averages).  For example,
+"PASTA" property (Poisson arrivals see time averages).  For example,
 the mean queue length seen by new arrivals (excluding the new arrival)
 is the mean queue length over time.
 
