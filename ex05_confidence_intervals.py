@@ -38,10 +38,11 @@ def test(mu,sigma):
     # Is the true mean within the C.I. of the empirical means (m)?
     return between(mu, ci(m))
 
-count = 0
-nTests = 10000
+if __name__ == "__main__":
+    count = 0
+    nTests = 10000
 
-for x in range(nTests):
-    if test(0,1):
-        count += 1
-print('Proportion of tests where the 95% confidence interval includes the true mean:', count/nTests)
+    for x in range(nTests):
+        if test(0,1):
+            count += 1
+    print('Proportion of tests where the 95% confidence interval includes the true mean:', count/nTests)

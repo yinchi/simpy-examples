@@ -1,12 +1,9 @@
-# 04 - M/M/k/k queue and the Erlang B formula
+# 06 M/D/k/k queue
 
 '''
-An M/M/k/k queue has Poisson arrivals, exponentially
-distributed service times, k servers, and no buffer.
-Any request that cannot receive service upon arrival
-is immediately blocked and cleared from the queue.
-The request blocking probability can be computed exactly
-using the Erlang B formula.
+The M/D/k/k queue is similar to the M/M/k/k queue from Example 4,
+except the service times are now constant (deterministic) rather
+than random.
 '''
 
 import simpy
@@ -22,14 +19,14 @@ def generator(env, stats, q, lambd, tau):
     while True:
         yield env.timeout(random.expovariate(lambd))
         r = request(env, stats, q,
-                    serviceTime = random.expovariate(1/tau))
+                    serviceTime = 1/tau)
         env.process(r)
 
 # Request handling
 def request(env, stats, q, serviceTime):
     stats.nArrived += 1
-    if (stats.nArrived % 100_000 == 0):
-        print(stats.nArrived,'arrivals at time',env.now)
+    #if (stats.nArrived % 100_000 == 0):
+        #print(stats.nArrived,'arrivals at time',env.now)
     arrTime = env.now
 
     if q.count < q.capacity:
@@ -46,14 +43,15 @@ def erlangB(load,nServers):
         inv = 1 + m/load * inv
     return 1/inv
 
-lambd = 9
-tau = 1
+if __name__ == "__main__":
+    lambd = 9
+    tau = 1
 
-env = simpy.Environment()
-stats = SimStats()
-q = simpy.Resource(env, capacity = 10)
-env.process(generator(env, stats, q, lambd, tau))
-env.run(until=100_000)
+    env = simpy.Environment()
+    stats = SimStats()
+    q = simpy.Resource(env, capacity = 10)
+    env.process(generator(env, stats, q, lambd, tau))
+    env.run(until=100_000)
 
-print('Blocking probability:', stats.nBlocked/stats.nArrived)
-print('Exact solution:', erlangB(lambd*tau, q.capacity))
+    print('Blocking probability:', stats.nBlocked/stats.nArrived)
+    print('Exact solution:', erlangB(lambd*tau, q.capacity))
